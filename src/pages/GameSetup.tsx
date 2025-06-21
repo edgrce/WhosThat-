@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
 import bg from "../assets/bg.jpeg";
 import logo from "../assets/logo.png";
@@ -42,9 +49,12 @@ export default function GameSetup() {
       const gameId = `game_${Date.now()}`;
 
       // 1️⃣ Ambil satu pasang kata dari collection words sesuai difficulty
-      const q = query(collection(db, "words"), where("difficulty", "==", difficulty));
+      const q = query(
+        collection(db, "words"),
+        where("difficulty", "==", difficulty)
+      );
       const snap = await getDocs(q);
-      const wordsArr = snap.docs.map(doc => doc.data());
+      const wordsArr = snap.docs.map((doc) => doc.data());
       if (wordsArr.length === 0) {
         alert("No word found for this difficulty.");
         return;
@@ -78,10 +88,11 @@ export default function GameSetup() {
       alert("Failed to start game. Please try again.");
     }
   };
+  // HANYA BAGIAN CLASSNAME & RESPONSIVE, logika TIDAK DIUBAH
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center font-sans"
+      className="relative min-h-screen flex items-center justify-center font-sans px-4"
       style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
@@ -95,12 +106,12 @@ export default function GameSetup() {
       <GameLogo src={logo} />
 
       {/* Main Card */}
-      <div className="relative z-10 flex flex-col items-center">
+      <div className="relative z-10 flex flex-col items-center w-full max-w-md">
         {/* Player & Slider */}
-        <div className="mb-5 text-center text-[#ffe7a0] text-3xl font-bold drop-shadow tracking-wider">
+        <div className="mb-5 text-center text-[#ffe7a0] text-2xl md:text-3xl font-bold drop-shadow tracking-wider">
           Player : {players}
         </div>
-        <div className="w-[420px] flex items-center justify-center mb-2 relative">
+        <div className="w-full flex items-center justify-center mb-2 relative">
           <input
             type="range"
             min={MIN_PLAYERS}
@@ -108,27 +119,27 @@ export default function GameSetup() {
             value={players}
             onChange={handlePlayersChange}
             className="w-full h-4 rounded-lg appearance-none bg-[#22364a] accent-[#22364a] outline-none mb-10
-              [&::-webkit-slider-thumb]:appearance-none
-              [&::-webkit-slider-thumb]:w-10
-              [&::-webkit-slider-thumb]:h-10
-              [&::-webkit-slider-thumb]:rounded-full
-              [&::-webkit-slider-thumb]:bg-[#22364a]
-              [&::-webkit-slider-thumb]:border-4
-              [&::-webkit-slider-thumb]:border-[#ffe7a0]
-              [&::-webkit-slider-thumb]:shadow-lg
-              [&::-moz-range-thumb]:w-10
-              [&::-moz-range-thumb]:h-10
-              [&::-moz-range-thumb]:rounded-full
-              [&::-moz-range-thumb]:bg-[#22364a]
-              [&::-moz-range-thumb]:border-4
-              [&::-moz-range-thumb]:border-[#ffe7a0]
-              [&::-ms-thumb]:w-10
-              [&::-ms-thumb]:h-10
-              [&::-ms-thumb]:rounded-full
-              [&::-ms-thumb]:bg-[#22364a]
-              [&::-ms-thumb]:border-4
-              [&::-ms-thumb]:border-[#ffe7a0]
-            "
+            [&::-webkit-slider-thumb]:appearance-none
+            [&::-webkit-slider-thumb]:w-10
+            [&::-webkit-slider-thumb]:h-10
+            [&::-webkit-slider-thumb]:rounded-full
+            [&::-webkit-slider-thumb]:bg-[#22364a]
+            [&::-webkit-slider-thumb]:border-4
+            [&::-webkit-slider-thumb]:border-[#ffe7a0]
+            [&::-webkit-slider-thumb]:shadow-lg
+            [&::-moz-range-thumb]:w-10
+            [&::-moz-range-thumb]:h-10
+            [&::-moz-range-thumb]:rounded-full
+            [&::-moz-range-thumb]:bg-[#22364a]
+            [&::-moz-range-thumb]:border-4
+            [&::-moz-range-thumb]:border-[#ffe7a0]
+            [&::-ms-thumb]:w-10
+            [&::-ms-thumb]:h-10
+            [&::-ms-thumb]:rounded-full
+            [&::-ms-thumb]:bg-[#22364a]
+            [&::-ms-thumb]:border-4
+            [&::-ms-thumb]:border-[#ffe7a0]
+          "
             style={{
               background: "linear-gradient(to right, #0C3B5D 0%, #0C3B5D 100%)",
             }}
@@ -136,11 +147,11 @@ export default function GameSetup() {
         </div>
 
         {/* Roles Card */}
-        <div className="bg-white/80 rounded-xl shadow-xl w-[420px] px-8 py-6 flex flex-col items-center mb-8">
+        <div className="bg-white/80 rounded-xl shadow-xl w-full px-6 py-6 flex flex-col items-center mb-8">
           {(["civilian", "undercover", "mrWhite"] as const).map((role) => (
             <div
               key={role}
-              className={`flex items-center justify-between w-full mb-3 last:mb-0`}
+              className="flex items-center justify-between w-full mb-3 last:mb-0"
             >
               <div className="flex items-center gap-2">
                 <span
@@ -155,7 +166,7 @@ export default function GameSetup() {
                   {roles[role]}
                 </span>
                 <span
-                  className={`text-lg font-bold w-60 text-center ${
+                  className={`text-base md:text-lg font-bold w-40 md:w-60 text-center ${
                     role === "civilian"
                       ? "text-[#22364a] bg-[#bfc3d1] rounded-full px-2"
                       : role === "undercover"
@@ -171,13 +182,13 @@ export default function GameSetup() {
               <div className="flex items-center gap-2">
                 <button
                   className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-lg transition
-                    ${
-                      role === "civilian"
-                        ? "bg-[#bfc3d1] text-[#22364a] hover:bg-[#dbe0ee]"
-                        : role === "undercover"
-                        ? "bg-[#2c2e4a] text-white hover:bg-[#3a3c5a]"
-                        : "bg-[#FFD586] text-[#22364a] hover:bg-[#fff3c0]"
-                    }`}
+                  ${
+                    role === "civilian"
+                      ? "bg-[#bfc3d1] text-[#22364a] hover:bg-[#dbe0ee]"
+                      : role === "undercover"
+                      ? "bg-[#2c2e4a] text-white hover:bg-[#3a3c5a]"
+                      : "bg-[#FFD586] text-[#22364a] hover:bg-[#fff3c0]"
+                  }`}
                   onClick={() => handleRoleChange(role, -1)}
                   disabled={roles[role] <= 1}
                 >
@@ -185,13 +196,13 @@ export default function GameSetup() {
                 </button>
                 <button
                   className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-lg transition
-                    ${
-                      role === "civilian"
-                        ? "bg-[#bfc3d1] text-[#22364a] hover:bg-[#dbe0ee]"
-                        : role === "undercover"
-                        ? "bg-[#2c2e4a] text-white hover:bg-[#3a3c5a]"
-                        : "bg-[#FFD586] text-[#22364a] hover:bg-[#fff3c0]"
-                    }`}
+                  ${
+                    role === "civilian"
+                      ? "bg-[#bfc3d1] text-[#22364a] hover:bg-[#dbe0ee]"
+                      : role === "undercover"
+                      ? "bg-[#2c2e4a] text-white hover:bg-[#3a3c5a]"
+                      : "bg-[#FFD586] text-[#22364a] hover:bg-[#fff3c0]"
+                  }`}
                   onClick={() => handleRoleChange(role, 1)}
                   disabled={
                     Object.values(roles).reduce((a, b) => a + b, 0) >= players
@@ -205,13 +216,13 @@ export default function GameSetup() {
         </div>
 
         {/* Difficulty & Start */}
-        <div className="flex gap-6 w-[420px]">
-          <div className="flex flex-col items-center bg-white/80 w-1/2 rounded-lg p-2 shawdow">
+        <div className="flex flex-col md:flex-row gap-4 w-full">
+          <div className="flex flex-col items-center bg-white/80 w-full md:w-1/2 rounded-lg p-2 shadow">
             <span className="text-xs text-[#22364a] font-bold tracking-wide">
               difficult
             </span>
             <select
-              className="w-full px-0 rounded-lg text-[#22364a] font-bold text-2xl text-center border-0 focus:outline-none"
+              className="w-full px-0 rounded-lg text-[#22364a] font-bold text-xl md:text-2xl text-center border-0 focus:outline-none"
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value as "easy" | "hard")}
               style={{ fontFamily: "inherit" }}
@@ -221,19 +232,19 @@ export default function GameSetup() {
             </select>
           </div>
           <button
-            className={`w-1/2 flex items-center justify-center gap-2 py-2 rounded-lg bg-[#ffe7a0] text-[#22364a] font-bold text-2xl shadow-lg transition
-              ${
-                !canStart
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:bg-[#ffe7a0]/90 hover:shadow-xl cursor-pointer"
-              }`}
+            className={`w-full md:w-1/2 flex items-center justify-center gap-2 py-3 rounded-lg bg-[#ffe7a0] text-[#22364a] font-bold text-xl md:text-2xl shadow-lg transition
+            ${
+              !canStart
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-[#ffe7a0]/90 hover:shadow-xl cursor-pointer"
+            }`}
             disabled={!canStart}
             onClick={handleStart}
           >
             <svg
               className="mr-2"
-              width="32"
-              height="32"
+              width="28"
+              height="28"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#22364a"

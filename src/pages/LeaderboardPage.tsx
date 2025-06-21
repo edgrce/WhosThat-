@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 import Leaderboard from "../components/Leaderboard";
 import { db } from "../firebase/config";
 import bg from "../assets/bg.jpeg";
@@ -21,25 +23,37 @@ export default function LeaderboardPage() {
   }, []);
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-start pt-16 px-4"
-      style={{
-        backgroundImage: `url(${bg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="absolute inset-0 bg-[#0b1b2a]/70 -z-10" />
+    <div className="flex flex-col md:flex-row h-screen">
+      {/* Sidebar */}
+      <Sidebar />
 
-      {loading ? (
-        <div className="text-white text-xl mt-10">Loading...</div>
-      ) : (
-        <Leaderboard
-          gameId={gameId}
-          enableControls={true}
-          onGameChange={(id) => setGameId(id)}
+      {/* Main Content Area */}
+      <div className="relative flex-1 flex flex-col">
+        {/* Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat -z-10"
+          style={{ backgroundImage: `url(${bg})` }}
         />
-      )}
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-[#0b1b2a]/70 -z-10" />
+
+        {/* Navbar */}
+        <Navbar />
+
+        {/* Main Content */}
+        <main className="flex-1 flex items-center justify-center relative z-10 px-4 overflow-y-auto">
+          {loading ? (
+            <div className="text-white text-xl mt-10">Loading...</div>
+          ) : (
+            <Leaderboard
+              gameId={gameId}
+              enableControls={true}
+              onGameChange={(id) => setGameId(id)}
+            />
+          )}
+        </main>
+      </div>
     </div>
   );
 }

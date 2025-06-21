@@ -42,7 +42,7 @@ export default function InformationPage() {
 
             {/* Undercover Card */}
             <div className="flex flex-col items-center rounded-xl bg-[#474965]/95 p-6 text-center shadow-lg">
-              <img src={undercover} alt="Undercover" className="w-28 mb-4" />
+              <img src={undercover} alt="Undercover" className="w-30 mb-4" />
               <h2 className="mb-2 text-2xl font-bold italic font-[cursive]">Undercover</h2>
               <p className="text-base font-[cursive]">
                 Gets a slightly different word from Civilian.
@@ -53,7 +53,7 @@ export default function InformationPage() {
 
             {/* Mr.White Card */}
             <div className="flex flex-col items-center rounded-xl bg-[#ffe7a0]/95 p-6 text-center shadow-lg">
-              <img src={mrwhite} alt="Mr.White" className="w-28 mb-4" />
+              <img src={mrwhite} alt="Mr.White" className="w-23 mb-4" />
               <h2 className="mb-2 text-2xl font-bold font-[cursive]">Mr.White</h2>
               <p className="text-base font-[cursive]">
                 Not accepting any words.
