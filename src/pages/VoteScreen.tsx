@@ -120,6 +120,73 @@ export default function VoteScreen() {
     );
   }
 
+  // Dynamic sizing based on player count
+  const getCardSizing = () => {
+    const playerCount = players.length;
+    
+    if (playerCount <= 6) {
+      return {
+        cardSize: "w-[150px] h-[210px]",
+        imageSize: "w-20 h-20",
+        gridCols: "repeat(3, minmax(0, 1fr))",
+        gap: "gap-8",
+        mobileCardSize: "w-[100px] h-[140px] sm:w-[120px] sm:h-[170px]",
+        mobileImageSize: "w-12 h-12 sm:w-16 sm:h-16",
+        mobileGridCols: "grid-cols-2 sm:grid-cols-3",
+        mobileGap: "gap-4 sm:gap-6",
+        numberSize: "w-8 h-8",
+        numberOffset: "-top-4 -left-4",
+        mobileNumberSize: "w-6 h-6 sm:w-8 sm:h-8",
+        mobileNumberOffset: "-top-3 -left-3 sm:-top-4 sm:-left-4"
+      };
+    } else if (playerCount <= 9) {
+      return {
+        cardSize: "w-[120px] h-[170px]",
+        imageSize: "w-16 h-16",
+        gridCols: "repeat(3, minmax(0, 1fr))",
+        gap: "gap-6",
+        mobileCardSize: "w-[90px] h-[125px] sm:w-[100px] sm:h-[140px]",
+        mobileImageSize: "w-10 h-10 sm:w-12 sm:h-12",
+        mobileGridCols: "grid-cols-3",
+        mobileGap: "gap-3 sm:gap-4",
+        numberSize: "w-7 h-7",
+        numberOffset: "-top-3 -left-3",
+        mobileNumberSize: "w-5 h-5 sm:w-6 sm:h-6",
+        mobileNumberOffset: "-top-2 -left-2 sm:-top-3 sm:-left-3"
+      };
+    } else {
+      return {
+        cardSize: "w-[100px] h-[140px]",
+        imageSize: "w-12 h-12",
+        gridCols: "repeat(4, minmax(0, 1fr))",
+        gap: "gap-4",
+        mobileCardSize: "w-[75px] h-[105px] sm:w-[85px] sm:h-[120px]",
+        mobileImageSize: "w-8 h-8 sm:w-10 sm:h-10",
+        mobileGridCols: "grid-cols-3 sm:grid-cols-4",
+        mobileGap: "gap-2 sm:gap-3",
+        numberSize: "w-6 h-6",
+        numberOffset: "-top-2 -left-2",
+        mobileNumberSize: "w-4 h-4 sm:w-5 sm:h-5",
+        mobileNumberOffset: "-top-1 -left-1 sm:-top-2 sm:-left-2"
+      };
+    }
+  };
+
+  const {
+    cardSize,
+    imageSize,
+    gridCols,
+    gap,
+    mobileCardSize,
+    mobileImageSize,
+    mobileGridCols,
+    mobileGap,
+    numberSize,
+    numberOffset,
+    mobileNumberSize,
+    mobileNumberOffset
+  } = getCardSizing();
+
   return (
     <div
       className="relative min-h-screen flex items-center justify-center font-sans overflow-x-hidden"
@@ -159,14 +226,14 @@ export default function VoteScreen() {
           {/* Right Panel - Players Grid */}
           <div className="flex-1 flex flex-col items-center justify-center">
             <div
-              className="grid gap-8"
+              className={`grid ${gap}`}
               style={{
-                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gridTemplateColumns: gridCols,
                 gridTemplateRows: `repeat(${Math.ceil(
-                  players.length / 3
+                  players.length / (gridCols.includes('4') ? 4 : 3)
                 )}, minmax(0, 1fr))`,
                 minWidth: 340,
-                maxWidth: 700,
+                maxWidth: players.length > 9 ? 800 : 700,
               }}
             >
               {players.map((player, idx) => {
@@ -175,7 +242,7 @@ export default function VoteScreen() {
                   <div key={player.id} className="flex flex-col items-center">
                     <div className="relative">
                       <button
-                        className={`bg-[#ffe7a0] rounded-xl shadow-lg w-[150px] h-[210px] flex items-center justify-center border-4 border-[#22364a] transition
+                        className={`bg-[#ffe7a0] rounded-xl shadow-lg ${cardSize} flex items-center justify-center border-4 border-[#22364a] transition
                           ${
                             selectedIdx === idx
                               ? "ring-4 ring-pink-400 scale-105"
@@ -193,11 +260,11 @@ export default function VoteScreen() {
                         <img
                           src={cardSilhouette}
                           alt="?"
-                          className="w-20 h-20 opacity-90"
+                          className={`${imageSize} opacity-90`}
                         />
                       </button>
                       <span
-                        className={`absolute -top-4 -left-4 font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white text-lg
+                        className={`absolute ${numberOffset} font-bold rounded-full ${numberSize} flex items-center justify-center border-2 border-white text-lg
                           ${
                             isEliminated
                               ? "bg-pink-300 text-white"
@@ -209,7 +276,7 @@ export default function VoteScreen() {
                       </span>
                     </div>
                     <div
-                      className={`mt-2 text-xl font-bold drop-shadow ${
+                      className={`mt-2 text-xl font-bold drop-shadow text-center max-w-[${cardSize.split(' ')[0].slice(2, -1)}px] truncate ${
                         isEliminated ? "text-pink-300 line-through" : "text-white"
                       }`}
                     >
@@ -246,14 +313,14 @@ export default function VoteScreen() {
 
           {/* Players Grid */}
           <div className="flex flex-col items-center justify-center px-2">
-            <div className="grid gap-4 sm:gap-6 w-full max-w-lg grid-cols-2 sm:grid-cols-3">
+            <div className={`grid ${mobileGap} w-full max-w-lg ${mobileGridCols}`}>
               {players.map((player, idx) => {
                 const isEliminated = player.eliminated;
                 return (
                   <div key={player.id} className="flex flex-col items-center">
                     <div className="relative">
                       <button
-                        className={`bg-[#ffe7a0] rounded-xl shadow-lg w-[100px] h-[140px] sm:w-[120px] sm:h-[170px] flex items-center justify-center border-4 border-[#22364a] transition
+                        className={`bg-[#ffe7a0] rounded-xl shadow-lg ${mobileCardSize} flex items-center justify-center border-4 border-[#22364a] transition
                           ${
                             selectedIdx === idx
                               ? "ring-4 ring-pink-400 scale-105"
@@ -271,11 +338,11 @@ export default function VoteScreen() {
                         <img
                           src={cardSilhouette}
                           alt="?"
-                          className="w-12 h-12 sm:w-16 sm:h-16 opacity-90"
+                          className={`${mobileImageSize} opacity-90`}
                         />
                       </button>
                       <span
-                        className={`absolute -top-3 -left-3 sm:-top-4 sm:-left-4 font-bold rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center border-2 border-white text-sm sm:text-lg
+                        className={`absolute ${mobileNumberOffset} font-bold rounded-full ${mobileNumberSize} flex items-center justify-center border-2 border-white text-sm sm:text-lg
                           ${
                             isEliminated
                               ? "bg-pink-300 text-white"

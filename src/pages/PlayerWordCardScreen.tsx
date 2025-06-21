@@ -123,6 +123,35 @@ export default function PlayerWordCardScreen() {
       setError("Failed to assign role & word");
     }
   };
+
+  // Dynamic sizing based on player count
+  const getCardSizing = () => {
+    if (playersCount <= 6) {
+      return {
+        cardSize: "w-[120px] h-[170px] md:w-[150px] md:h-[210px]",
+        imageSize: "w-16 h-16 md:w-20 md:h-20",
+        gridCols: "grid-cols-2 md:grid-cols-3",
+        gap: "gap-4 md:gap-8"
+      };
+    } else if (playersCount <= 9) {
+      return {
+        cardSize: "w-[100px] h-[140px] md:w-[120px] md:h-[170px]",
+        imageSize: "w-12 h-12 md:w-16 md:h-16",
+        gridCols: "grid-cols-3 md:grid-cols-3",
+        gap: "gap-3 md:gap-6"
+      };
+    } else {
+      return {
+        cardSize: "w-[80px] h-[110px] md:w-[100px] md:h-[140px]",
+        imageSize: "w-10 h-10 md:w-12 md:h-12",
+        gridCols: "grid-cols-3 md:grid-cols-4",
+        gap: "gap-2 md:gap-4"
+      };
+    }
+  };
+
+  const { cardSize, imageSize, gridCols, gap } = getCardSizing();
+
   return (
     <div
       className="relative min-h-screen flex items-center justify-center font-sans px-4"
@@ -162,13 +191,13 @@ export default function PlayerWordCardScreen() {
 
         {/* Card Grid */}
         <div className="flex-1 flex flex-col items-center justify-center w-full">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 w-full max-w-xl">
+          <div className={`grid ${gridCols} ${gap} w-full max-w-4xl`}>
             {Array.from({ length: playersCount }).map((_, idx) => {
               const isPicked = idx < assignedNames.length;
               return (
                 <div key={idx} className="flex items-center justify-center">
                   <button
-                    className={`bg-[#ffe7a0] rounded-xl shadow-lg w-[120px] h-[170px] md:w-[150px] md:h-[210px] flex items-center justify-center border-4 border-[#22364a] transition
+                    className={`bg-[#ffe7a0] rounded-xl shadow-lg ${cardSize} flex items-center justify-center border-4 border-[#22364a] transition
                 ${
                   isPicked ? "opacity-40 cursor-not-allowed" : "hover:scale-105"
                 }
@@ -179,7 +208,7 @@ export default function PlayerWordCardScreen() {
                     <img
                       src={cardSilhouette}
                       alt="?"
-                      className="w-16 h-16 md:w-20 md:h-20 opacity-90"
+                      className={`${imageSize} opacity-90`}
                     />
                   </button>
                 </div>
