@@ -1,39 +1,49 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '../firebase/services';
-import { GoogleAuthButton } from '../components/auth/GoogleAuthButton';
-import backgroundImage from '../assets/bg.jpeg';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../firebase/services";
+import { GoogleAuthButton } from "../components/auth/GoogleAuthButton";
+import backgroundImage from "../assets/bg.jpeg";
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await authService.login(email, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError('Email atau password salah');
+      setError("Email atau password salah");
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
       await authService.loginWithGoogle();
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Gagal login dengan Google');
+      navigate("/dashboard");
+    } catch (err: any) {
+      console.error("Google login error:", err);
+      if (err.code === "auth/unauthorized-domain") {
+        setError("Domain tidak diotorisasi. Hubungi administrator.");
+      } else {
+        setError("Gagal login dengan Google");
+      }
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div
+      className="fixed inset-0 bg-cover bg-center"
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <div className="w-full h-full flex items-start justify-start p-10">
         <div className="bg-[#000A1B] border border-[#D9D9D9] p-10 rounded-xl shadow-lg max-w-md w-full text-[#D9D9D9]">
-          <h1 className="text-3xl font-bold mb-6 tracking-wider text-[#FFE3A9]">Login</h1>
+          <h1 className="text-3xl font-bold mb-6 tracking-wider text-[#FFE3A9]">
+            Login
+          </h1>
 
           {error && <div className="text-red-400 mb-4">{error}</div>}
 
@@ -74,13 +84,15 @@ export const LoginPage = () => {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-600" />
             </div>
-            <div className="relative bg-[#000A1B] px-4 text-gray-400 text-sm inline-block">Atau</div>
+            <div className="relative bg-[#000A1B] px-4 text-gray-400 text-sm inline-block">
+              Atau
+            </div>
           </div>
 
           <GoogleAuthButton onClick={handleGoogleLogin} />
 
           <div className="cursor-pointer text-center text-sm mt-6 text-gray-400">
-            Belum punya akun?{' '}
+            Belum punya akun?{" "}
             <a href="/register" className="text-[#FFE3A9] hover:underline">
               Daftar disini
             </a>
