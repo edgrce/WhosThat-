@@ -7,9 +7,14 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Helper untuk navigasi + close sidebar
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    setIsOpen(false);
+  };
+
   return (
     <>
-      {/* Burger Button: Visible only on mobile */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 p-2 bg-[#0b1b2a] text-[#ffe7a0] rounded focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
@@ -30,10 +35,7 @@ export default function Sidebar() {
         {/* Logo */}
         <div className="p-8 border-b border-[#2c3a4a] flex items-center justify-center">
           <button
-            onClick={() => {
-              navigate("/dashboard");
-              setIsOpen(false); // close sidebar on mobile click
-            }}
+            onClick={() => handleNavigate("/dashboard")}
             className="focus:outline-none"
             aria-label="Go to Dashboard"
           >
@@ -45,36 +47,33 @@ export default function Sidebar() {
         <nav className="flex-1 px-6 py-10">
           <ul className="space-y-8">
             <li>
-              <a
-                href="/library"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={() => handleNavigate("/library")}
                 className="flex items-center gap-4 text-xl font-bold text-[#dbeafe] hover:text-[#ffe7a0] transition"
               >
                 <FaBookOpen size={32} />
                 <span>Library</span>
-              </a>
+              </button>
               <hr className="border-[#ffe7a0]/30 mt-4" />
             </li>
             <li>
-              <a
-                href="/leaderboardpage"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={() => handleNavigate("/leaderboardpage")}
                 className="flex items-center gap-4 text-xl font-bold text-[#ffe7a0] hover:text-[#dbeafe] transition"
               >
                 <FaTrophy size={32} />
                 <span>Leaderboard</span>
-              </a>
+              </button>
               <hr className="border-[#ffe7a0]/30 mt-4" />
             </li>
             <li>
-              <a
-                href="/information"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={() => handleNavigate("/information")}
                 className="flex items-center gap-4 text-xl font-bold text-[#fbb6ce] hover:text-[#ffe7a0] transition"
               >
                 <FaInfoCircle size={32} />
                 <span>Information</span>
-              </a>
+              </button>
               <hr className="border-[#fbb6ce]/30 mt-4" />
             </li>
           </ul>
