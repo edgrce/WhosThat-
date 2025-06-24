@@ -1,37 +1,36 @@
+// ✅ Final correct type
 export interface PlayerData {
   id: string;
   username: string;
   role: string;
   eliminated?: boolean;
   isMrWhiteCorrect?: boolean;
+  totalScore?: number; // <-- important!
 }
 
-/**
- * Menghitung skor berdasarkan role dan hasil akhir pertandingan.
- * @param players daftar pemain
- * @param winner pemenang round
- */
-export function calculateScores(players: PlayerData[], winner: string): Record<string, { roundScore: number }> {
-  const scores: Record<string, { roundScore: number }> = {};
+export interface ScoreData {
+  roundScore: number;
+}
 
-  for (const player of players) {
-    const role = player.role?.toLowerCase?.();
-    const isEliminated = player.eliminated ?? false;
-    const username = player.username;
+export function calculateScores(players: PlayerData[], winner: string): Record<string, ScoreData> {
+  const scores: Record<string, ScoreData> = {};
 
+  for (const p of players) {
     let roundScore = 0;
 
-    // Kondisi menang
-    if (role === "mrwhite" && winner === "mrwhite" && player.isMrWhiteCorrect) {
-      roundScore = 400;
-    } else if (role === winner && !isEliminated) {
-      if (role === "civilian") roundScore = 200;
-      else if (role === "undercover") roundScore = 300;
+    if (!p.eliminated && p.role === winner) {
+      roundScore = 100;
+      if (p.role === "undercover") roundScore += 50;
+      if (p.role === "mrwhite" && p.isMrWhiteCorrect) roundScore += 100;
     }
 
-    // Kondisi kalah → score tetap 0
+    if (p.eliminated && p.role !== winner) {
+      roundScore -= 30;
+    }
 
-    scores[username] = { roundScore };
+    scores[p.id] = {
+      roundScore: Math.max(0, roundScore)
+    };
   }
 
   return scores;
