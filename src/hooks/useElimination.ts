@@ -1,14 +1,7 @@
 import { doc, updateDoc, getDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { calculateScores } from "../utils/scoreUtils";
-
-// ✅ Interface Player: sama persis dengan yang di scoreUtils & useGameElimination
-export interface Player {
-  id: string;
-  role: string;
-  eliminated?: boolean;
-  isMrWhiteCorrect?: boolean;
-}
+import { Player } from "../types/player";
 
 /**
  * Optional: fungsi processElimination di hook ini 
@@ -35,6 +28,7 @@ export async function processElimination(
       const data = docSnap.data();
       return {
         id: docSnap.id,
+        username: docSnap.id, // ✅ Set username dari document ID
         role: data.role,
         eliminated: data.eliminated,
         isMrWhiteCorrect: data.isMrWhiteCorrect || false,
@@ -46,9 +40,10 @@ export async function processElimination(
 
     // 5️⃣ Update score di Firestore
     await Promise.all(
-      Object.entries(scores).map(([id, s]) =>
+      Object.entries(scores).map(([id, scoreData]) =>
         updateDoc(doc(db, "games", gameId, "players", id), {
-          score: s.totalScore,
+          score: scoreData.roundScore, // ✅ Gunakan roundScore, bukan totalScore
+          totalScore: scoreData.totalScore, // ✅ Update totalScore juga
         })
       )
     );

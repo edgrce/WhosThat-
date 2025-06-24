@@ -7,15 +7,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { calculateScores } from "../utils/scoreUtils";
-
-export type Winner = "civilian" | "undercover" | "mrwhite";
-
-export interface Player {
-  id: string;
-  role: string;
-  eliminated?: boolean;
-  isMrWhiteCorrect?: boolean;
-}
+import { Player, Winner } from "../types/player";
 
 export async function checkWinnerAndFinishGame(
   gameId: string
@@ -31,6 +23,7 @@ export async function checkWinnerAndFinishGame(
     const data = docSnap.data();
     return {
       id: docSnap.id,
+      username: docSnap.id, // ✅ Set username dari document ID
       role: data.role?.toLowerCase(),
       eliminated: data.eliminated,
       isMrWhiteCorrect: data.isMrWhiteCorrect || false,
@@ -106,11 +99,12 @@ export async function finalizeEliminationAndCheckWinner(
       return;
     }
 
-    const players = snap.docs.map((docSnap) => {
+    // ✅ Buat players dengan structure yang benar
+    const players: Player[] = snap.docs.map((docSnap) => {
       const data = docSnap.data();
       return {
         id: docSnap.id,
-        username: docSnap.id,
+        username: docSnap.id, // ✅ Set username dari document ID
         role: data.role?.toLowerCase(),
         eliminated: data.eliminated ?? false,
         isMrWhiteCorrect: data.isMrWhiteCorrect || false,
@@ -123,13 +117,15 @@ export async function finalizeEliminationAndCheckWinner(
       snap.docs.map(async (docSnap) => {
         const data = docSnap.data();
         const username = docSnap.id;
-        const roundScore = scores[username]?.roundScore ?? 0;
-
-        await updateDoc(doc(db, "games", gameId, "players", username), {
-          score: roundScore,
-          totalScore: (data.totalScore ?? 0) + roundScore,
-          scored: true, // ✅ ditandai sudah diberi skor
-        });
+        const scoreData = scores[username];
+        
+        if (scoreData) {
+          await updateDoc(doc(db, "games", gameId, "players", username), {
+            score: scoreData.roundScore,
+            totalScore: (data.totalScore ?? 0) + scoreData.roundScore,
+            scored: true, // ✅ ditandai sudah diberi skor
+          });
+        }
       })
     );
 

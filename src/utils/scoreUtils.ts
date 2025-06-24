@@ -1,19 +1,12 @@
-
-export interface PlayerData {
-  id: string;
-  username: string;
-  role: string;
-  eliminated?: boolean;
-  isMrWhiteCorrect?: boolean;
-}
+import { Player, ScoreResult } from "../types/player";
 
 /**
  * Menghitung skor berdasarkan role dan hasil akhir pertandingan.
  * @param players daftar pemain
  * @param winner pemenang round
  */
-export function calculateScores(players: PlayerData[], winner: string): Record<string, { roundScore: number }> {
-  const scores: Record<string, { roundScore: number }> = {};
+export function calculateScores(players: Player[], winner: string): Record<string, ScoreResult> {
+  const scores: Record<string, ScoreResult> = {};
 
   for (const player of players) {
     const role = player.role?.toLowerCase?.();
@@ -32,7 +25,7 @@ export function calculateScores(players: PlayerData[], winner: string): Record<s
 
     // Kondisi kalah → score tetap 0
 
-    scores[username] = { roundScore };
+    scores[username] = { roundScore, totalScore: roundScore };
   }
 
   return scores;
