@@ -13,22 +13,19 @@ export async function processElimination(
   playerId: string,
   navigate: (path: string, options?: any) => void
 ) {
-  // 1️⃣ Tandai eliminated di Firestore
   const playerRef = doc(db, "games", gameId, "players", playerId);
   await updateDoc(playerRef, { eliminated: true });
 
-  // 2️⃣ Cek game status
   const gameDoc = await getDoc(doc(db, "games", gameId));
   const gameData = gameDoc.data();
 
   if (gameData?.status === "finished" && gameData?.winner) {
-    // 3️⃣ Ambil semua player
     const snap = await getDocs(collection(db, "games", gameId, "players"));
     const players: Player[] = snap.docs.map((docSnap) => {
       const data = docSnap.data();
       return {
         id: docSnap.id,
-        username: docSnap.id, // ✅ Set username dari document ID
+        username: docSnap.id, 
         role: data.role,
         eliminated: data.eliminated,
         isMrWhiteCorrect: data.isMrWhiteCorrect || false,
