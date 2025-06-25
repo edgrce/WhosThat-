@@ -74,7 +74,6 @@ export default function LibraryPage() {
     }
   };
 
-  // ✅ NEW: Delete Flow with Confirm
   const handleDeleteRequest = (id: string) => {
     setConfirmDeleteId(id);
   };
@@ -157,7 +156,7 @@ const handleDeleteConfirm = async () => {
               <form onSubmit={handleCreate} className="space-y-4">
                 <div className="flex flex-col gap-4">
                   <input
-                    className="rounded-lg px-4 py-3 text-lg font-[cursive] outline-none bg-white w-full"
+                    className="rounded-lg px-4 py-3 text-lg font-['Brush_Script_MT'] outline-none bg-white w-full"
                     placeholder="Word 1"
                     value={form.word1}
                     onChange={(e) =>
@@ -165,7 +164,7 @@ const handleDeleteConfirm = async () => {
                     }
                   />
                   <input
-                    className="rounded-lg px-4 py-3 text-lg font-[cursive] outline-none bg-white w-full"
+                    className="rounded-lg px-4 py-3 text-lg font-['Brush_Script_MT'] outline-none bg-white w-full"
                     placeholder="Word 2"
                     value={form.word2}
                     onChange={(e) =>
@@ -176,7 +175,7 @@ const handleDeleteConfirm = async () => {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <select
-                    className="rounded-lg px-4 py-3 text-lg font-[cursive] outline-none bg-white w-full"
+                    className="rounded-lg px-4 py-3 text-lg font-['Brush_Script_MT'] outline-none bg-white w-full"
                     value={form.difficulty}
                     onChange={(e) =>
                       setForm({
@@ -203,7 +202,7 @@ const handleDeleteConfirm = async () => {
               <div className="flex flex-col lg:flex-row gap-8">
                 {!editingHard && (
                   <div className="flex-1 space-y-3 min-w-0">
-                    <h2 className="text-2xl font-bold font-[cursive] text-[#7b61ff] mb-4">
+                    <h2 className="text-2xl font-bold font-['Brush_Script_MT'] text-[#7b61ff] mb-4">
                       Easy
                     </h2>
                     {easyWords.map((item) => (
@@ -224,7 +223,7 @@ const handleDeleteConfirm = async () => {
 
                 {!editingEasy && (
                   <div className="flex-1 space-y-3 min-w-0">
-                    <h2 className="text-2xl font-bold font-[cursive] text-[#7b61ff] mb-4">
+                    <h2 className="text-2xl font-bold font-['Brush_Script_MT'] text-[#7b61ff] mb-4">
                       Hard
                     </h2>
                     {hardWords.map((item) => (
@@ -289,7 +288,7 @@ function WordItemComponent({
   return editId === item.id ? (
     <div className="bg-white rounded-lg flex items-center px-4 py-2 justify-between gap-x-2 min-w-0">
       <input
-        className="font-bold font-[cursive] text-lg bg-transparent outline-none w-32 max-w-[120px]"
+        className="font-bold font-['Brush_Script_MT'] text-lg bg-transparent outline-none w-32 max-w-[120px]"
         value={editForm.word1}
         onChange={(e) =>
           setEditForm((prev: any) => ({ ...prev, word1: e.target.value }))
@@ -297,7 +296,7 @@ function WordItemComponent({
       />
       <span className="mx-1 font-bold text-lg">|</span>
       <input
-        className="font-bold font-[cursive] text-lg bg-transparent outline-none w-32 max-w-[120px]"
+        className="font-bold font-['Brush_Script_MT'] text-lg bg-transparent outline-none w-32 max-w-[120px]"
         value={editForm.word2}
         onChange={(e) =>
           setEditForm((prev: any) => ({ ...prev, word2: e.target.value }))
@@ -322,7 +321,7 @@ function WordItemComponent({
     </div>
   ) : (
     <div className="bg-white rounded-lg flex items-center px-4 py-2 justify-between min-w-0">
-      <span className="font-bold font-[cursive] text-lg truncate flex-1 min-w-0">
+      <span className="font-bold font-['Brush_Script_MT'] text-lg truncate flex-1 min-w-0">
         {item.word1} | {item.word2}
       </span>
       <span className="flex gap-2 ml-2">

@@ -154,7 +154,7 @@ export default function PlayerWordCardScreen() {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center font-sans px-4"
+      className="relative min-h-screen flex items-center justify-center font-['Brush_Script_MT'] px-4"
       style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
@@ -178,12 +178,11 @@ export default function PlayerWordCardScreen() {
         {/* Left Card */}
         <div className="bg-[#f5f6f7]/90 rounded-2xl shadow-xl w-full max-w-xs min-h-[420px] flex flex-col px-6 py-8">
           <div
-            className="text-3xl font-bold text-[#22364a] mb-2 text-center"
-            style={{ fontFamily: "'Luckiest Guy', cursive" }}
+            className="text-3xl font-bold text-[#22364a] mb-2 text-center font-['Brush_Script_MT']"
           >
             {currentUsername}
           </div>
-          <div className="text-[#3b5c7e] text-lg mb-4 text-center">
+          <div className="text-[#3b5c7e] text-lg mb-4 text-center font-['Brush_Script_MT']">
             choose a card
           </div>
           <RoleList roles={roles} meta={ROLE_META} />
@@ -191,7 +190,7 @@ export default function PlayerWordCardScreen() {
 
         {/* Card Grid */}
         <div className="flex-1 flex flex-col items-center justify-center w-full">
-          <div className={`grid ${gridCols} ${gap} w-full max-w-4xl`}>
+          <div className={`grid ${gridCols} ${gap} w-full max-w-2xl`}>
             {Array.from({ length: playersCount }).map((_, idx) => {
               const isPicked = idx < assignedNames.length;
               return (

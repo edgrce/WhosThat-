@@ -44,14 +44,14 @@ export default function VoteScreen() {
     if (!gameId) return;
 
     const fetchAll = async () => {
-      // ✅ Kalau roles kosong, ambil dari Firestore supaya tidak stuck
+ 
       if (!initRoles) {
         const gameDoc = await getDoc(doc(db, "games", gameId));
         const rolesFromDB = gameDoc.data()?.roles || {};
         setRoles(rolesFromDB);
       }
 
-      // ✅ Fetch players
+ 
       const snap = await getDocs(collection(db, "games", gameId, "players"));
       const arr: Player[] = [];
       snap.forEach((docSnap) => {
@@ -82,8 +82,7 @@ export default function VoteScreen() {
     const role = eliminatedPlayer.role.toLowerCase();
 
     if (role === "mrwhite") {
-      // ✅ Mr White → Tandai eliminated + redirect ke tebak kata
-      // Jangan finalize winner di sini!
+ 
       const playerRef = doc(db, "games", gameId, "players", eliminatedPlayer.id);
       updateDoc(playerRef, { eliminated: true }).then(() => {
         navigate("/mrwhiteguess", { state: { gameId } });
@@ -205,13 +204,13 @@ export default function VoteScreen() {
         <div className="hidden lg:flex flex-row items-center justify-center">
           {/* Left Panel - Role List */}
           <div className="bg-[#f5f6f7]/95 rounded-2xl shadow-xl w-[320px] min-h-[320px] flex flex-col px-8 py-8 mr-12">
-            <div className="text-2xl font-bold mb-2">Find Them</div>
-            <div className="text-[#3b5c7e] text-md mb-6 font-semibold">
+            <div className="text-2xl font-bold mb-2 font-['Brush_Script_MT']">Find Them</div>
+            <div className="text-[#3b5c7e] text-md mb-6 font-semibold font-['Brush_Script_MT']">
               vote to eliminate
             </div>
             <RoleList roles={roles} meta={ROLE_META} />
             <button
-              className={`w-full font-bold text-2xl py-2 rounded-lg shadow-lg transition mt-8 ${
+              className={`w-full font-bold text-2xl py-2 rounded-lg shadow-lg transition mt-8  font-['Brush_Script_MT'] ${
                 selectedIdx === null
                   ? "bg-[#ffe7a0] text-[#22364a] cursor-not-allowed"
                   : "bg-[#FFB3B3] text-[#22364a] hover:bg-[#FFB3B3]/90 cursor-pointer"
@@ -224,7 +223,7 @@ export default function VoteScreen() {
           </div>
 
           {/* Right Panel - Players Grid */}
-          <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="flex-1 flex flex-col items-center justify-center font-['Brush_Script_MT']">
             <div
               className={`grid ${gap}`}
               style={{
@@ -264,7 +263,7 @@ export default function VoteScreen() {
                         />
                       </button>
                       <span
-                        className={`absolute ${numberOffset} font-bold rounded-full ${numberSize} flex items-center justify-center border-2 border-white text-lg
+                        className={`absolute ${numberOffset} font-bold rounded-full font-['Brush_Script_MT'] ${numberSize} flex items-center justify-center border-2 border-white text-lg
                           ${
                             isEliminated
                               ? "bg-pink-300 text-white"
@@ -293,13 +292,13 @@ export default function VoteScreen() {
         <div className="lg:hidden flex flex-col space-y-6">
           {/* Role List Panel */}
           <div className="bg-[#f5f6f7]/95 rounded-2xl shadow-xl flex flex-col px-6 sm:px-8 py-6 sm:py-8 mx-auto w-full max-w-sm">
-            <div className="text-xl sm:text-2xl font-bold mb-2">Find Them</div>
-            <div className="text-[#3b5c7e] text-sm sm:text-md mb-4 sm:mb-6 font-semibold">
+            <div className="text-xl sm:text-2xl font-bold mb-2 font-['Brush_Script_MT']">Find Them</div>
+            <div className="text-[#3b5c7e] text-sm sm:text-md mb-4 font-['Brush_Script_MT'] sm:mb-6 font-semibold">
               vote to eliminate
             </div>
             <RoleList roles={roles} meta={ROLE_META} />
             <button
-              className={`w-full font-bold text-lg sm:text-2xl py-2 rounded-lg shadow-lg transition mt-6 sm:mt-8 ${
+              className={`w-full font-bold text-lg sm:text-2xl py-2 font-['Brush_Script_MT'] rounded-lg shadow-lg transition mt-6 sm:mt-8 ${
                 selectedIdx === null
                   ? "bg-[#ffe7a0] text-[#22364a] cursor-not-allowed"
                   : "bg-[#FFB3B3] text-[#22364a] hover:bg-[#FFB3B3]/90 cursor-pointer"
@@ -354,7 +353,7 @@ export default function VoteScreen() {
                       </span>
                     </div>
                     <div
-                      className={`mt-2 text-sm sm:text-xl font-bold drop-shadow text-center max-w-[100px] sm:max-w-none truncate sm:truncate-none ${
+                      className={`mt-2 text-sm sm:text-xl font-bold drop-shadow font-['Brush_Script_MT'] text-center max-w-[100px] sm:max-w-none truncate sm:truncate-none ${
                         isEliminated ? "text-pink-300 line-through" : "text-white"
                       }`}
                     >
@@ -372,7 +371,7 @@ export default function VoteScreen() {
       {showConfirm && selectedIdx !== null && !eliminatedPlayer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
           <div className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 flex flex-col items-center max-w-md w-full">
-            <div className="text-lg sm:text-2xl font-bold mb-4 text-[#22364a] text-center">
+            <div className="text-lg sm:text-2xl font-['Brush_Script_MT'] font-bold mb-4 text-[#22364a] text-center">
               Are you sure you want to eliminate{" "}
               <span className="text-pink-600">
                 {players[selectedIdx].username}
@@ -381,13 +380,13 @@ export default function VoteScreen() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-4 w-full sm:w-auto">
               <button
-                className="bg-[#FFB3B3] text-[#22364a] font-bold px-6 py-2 rounded-lg shadow hover:bg-[#ffe7a0] transition order-2 sm:order-1"
+                className="bg-[#FFB3B3] text-[#22364a] font-bold font-['Brush_Script_MT'] px-6 py-2 rounded-lg shadow hover:bg-[#ffe7a0] transition order-2 sm:order-1"
                 onClick={handleElimination}
               >
                 Yes, Eliminate
               </button>
               <button
-                className="bg-gray-300 text-[#22364a] font-bold px-6 py-2 rounded-lg shadow hover:bg-gray-400 transition order-1 sm:order-2"
+                className="bg-gray-300 text-[#22364a] font-bold font-['Brush_Script_MT'] px-6 py-2 rounded-lg shadow hover:bg-gray-400 transition order-1 sm:order-2"
                 onClick={() => setShowConfirm(false)}
               >
                 Cancel

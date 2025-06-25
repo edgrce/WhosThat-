@@ -121,7 +121,7 @@ export default function LoginUsername() {
         role,
         word,
         score: 0,
-        totalScore: 0, // ✅ pastikan awal totalScore ada
+        totalScore: 0,  
         createdAt: new Date(),
       });
 
@@ -166,14 +166,14 @@ export default function LoginUsername() {
         <input
           type="text"
           placeholder="Username"
-          className="mt-8 mb-8 bg-transparent border-b-2 border-[#22364a] text-center text-[#22364a] text-xl outline-none w-64"
+          className="mt-8 mb-8 bg-transparent border-b-2 border-[#22364a] text-center font-['Brush_Script_MT'] text-[#22364a] text-xl outline-none w-64"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         {error && <div className="text-red-600 mb-2">{error}</div>}
         <button
           type="submit"
-          className="bg-[#0b1b2a] text-white px-10 py-2 rounded-lg text-lg font-bold hover:bg-[#22364a] transition"
+          className="bg-[#0b1b2a] text-white px-10 py-2 rounded-lg text-lg font-bold hover:bg-[#22364a] font-['Brush_Script_MT'] transition"
         >
           Ok
         </button>

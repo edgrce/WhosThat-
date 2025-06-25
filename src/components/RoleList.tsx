@@ -33,8 +33,8 @@ export default function RoleList({ roles, meta }: Props) {
             }}
           >
             <img src={m.icon} alt={m.label} className="w-9 h-9" />
-            <span className="flex-1">{m.label}</span>
-            <span className="text-xl font-bold">{count}</span>
+            <span className="flex-1 font-['Brush_Script_MT']">{m.label}</span>
+            <span className="text-xl font-bold font-['Brush_Script_MT']">{count}</span>
           </div>
         );
       })}

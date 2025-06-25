@@ -14,10 +14,9 @@ export default function PlayerDraw() {
     assignedRoles = [],
     assignedNames = [],
     usernames = [],
-    isNextRound = false, // ✅ flag default
+    isNextRound = false, 
   } = location.state || {};
-
-  // ✅ Ambil username: NextRound pakai usernames; FirstRound pakai Player X
+ 
   const currentUsername = usernames.length > 0
     ? usernames[currentPlayer - 1] || `Player ${currentPlayer}`
     : `Player ${currentPlayer}`;
@@ -39,7 +38,7 @@ export default function PlayerDraw() {
       >
         <div
           className="text-[#0b1b2a] text-3xl md:text-4xl font-bold mb-8 text-center"
-          style={{ fontFamily: "'Luckiest Guy', 'Comic Sans MS', cursive, sans-serif" }}
+          style={{ fontFamily: "Brush_Script_MT" }}
         >
           {currentUsername}
         </div>
@@ -52,7 +51,7 @@ export default function PlayerDraw() {
         />
 
         <button
-          className="w-1/2 flex items-center justify-center gap-2 py-2 rounded-lg bg-[#ffe7a0] text-[#22364a] font-bold text-2xl shadow-lg transition hover:bg-[#ffe7a0]/90 hover:shadow-xl cursor-pointer"
+          className="w-1/2 flex items-center justify-center gap-2 py-2 rounded-lg bg-[#ffe7a0] font-['Brush_Script_MT'] text-[#22364a] font-bold text-2xl shadow-lg transition hover:bg-[#ffe7a0]/90 hover:shadow-xl cursor-pointer"
           onClick={() =>
             navigate('/playerwordcard', {
               state: {
@@ -64,8 +63,8 @@ export default function PlayerDraw() {
                 assignedRoles,
                 assignedNames,
                 usernames,
-                username: currentUsername, // ✅ bawa nama sesuai urutan
-                isNextRound,               // ✅ bawa flag
+                username: currentUsername,  
+                isNextRound,                
               },
             })
           }

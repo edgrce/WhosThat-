@@ -158,10 +158,10 @@ export default function MrWhiteGuess() {
         onSubmit={handleSubmit}
         className="relative z-10 bg-white/90 rounded-xl shadow-2xl px-8 py-10 w-full max-w-md flex flex-col items-center"
       >
-        <h1 className="text-3xl font-bold text-[#22364a] mb-6 text-center">
+        <h1 className="text-3xl font-bold text-[#22364a] mb-6 text-center font-['Brush_Script_MT']">
           MR. WHITE GUESS
         </h1>
-        <p className="text-center text-[#22364a] mb-6">
+        <p className="text-center text-[#22364a] mb-6 font-['Brush_Script_MT']">
           You have been eliminated! Try to guess the civilian's word.
         </p>
 
@@ -170,14 +170,14 @@ export default function MrWhiteGuess() {
           placeholder="Your guess..."
           value={guess}
           onChange={(e) => setGuess(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border border-[#22364a] text-[#22364a] text-lg mb-4 focus:outline-none"
+          className="w-full px-4 py-2 rounded-lg border border-[#22364a] text-[#22364a] font-['Brush_Script_MT'] text-lg mb-4 focus:outline-none"
         />
 
         {error && <div className="text-red-600 mb-2">{error}</div>}
 
         <button
           type="submit"
-          className="bg-[#0b1b2a] text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-[#22364a] transition"
+          className="bg-[#0b1b2a] text-white px-8 py-3 rounded-lg font-bold font-['Brush_Script_MT'] text-lg hover:bg-[#22364a] transition"
         >
           Submit Guess
         </button>

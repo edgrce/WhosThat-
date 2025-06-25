@@ -71,7 +71,7 @@ export default function GameSetup() {
         createdAt: new Date(),
       });
 
-      // 3️⃣ Lanjut ke player draw, bawa gameId dan info
+ 
       navigate("/playerdraw", {
         state: {
           gameId,
@@ -88,7 +88,7 @@ export default function GameSetup() {
       alert("Failed to start game. Please try again.");
     }
   };
-  // HANYA BAGIAN CLASSNAME & RESPONSIVE, logika TIDAK DIUBAH
+ 
 
   return (
     <div
@@ -108,7 +108,7 @@ export default function GameSetup() {
       {/* Main Card */}
       <div className="relative z-10 flex flex-col items-center w-full max-w-md">
         {/* Player & Slider */}
-        <div className="mb-5 text-center text-[#ffe7a0] text-2xl md:text-3xl font-bold drop-shadow tracking-wider">
+        <div className="mb-5 text-center text-[#ffe7a0] text-2xl md:text-3xl font-bold font-['Brush_Script_MT'] drop-shadow tracking-wider">
           Player : {players}
         </div>
         <div className="w-full flex items-center justify-center mb-2 relative">
@@ -155,7 +155,7 @@ export default function GameSetup() {
             >
               <div className="flex items-center gap-2">
                 <span
-                  className={`w-8 h-8 flex items-center justify-center rounded-full text-base font-bold  ${
+                  className={`w-8 h-8 flex items-center justify-center rounded-full text-base font-bold font-['Brush_Script_MT'] ${
                     role === "civilian"
                       ? "bg-[#bfc3d1] text-[#22364a]"
                       : role === "undercover"
@@ -166,7 +166,7 @@ export default function GameSetup() {
                   {roles[role]}
                 </span>
                 <span
-                  className={`text-base md:text-lg font-bold w-40 md:w-60 text-center ${
+                  className={`text-base md:text-lg font-bold w-40 md:w-60 text-center font-['Brush_Script_MT'] ${
                     role === "civilian"
                       ? "text-[#22364a] bg-[#bfc3d1] rounded-full px-2"
                       : role === "undercover"
@@ -181,7 +181,7 @@ export default function GameSetup() {
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-lg transition
+                  className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-lg font-['Brush_Script_MT'] transition
                   ${
                     role === "civilian"
                       ? "bg-[#bfc3d1] text-[#22364a] hover:bg-[#dbe0ee]"
@@ -195,7 +195,7 @@ export default function GameSetup() {
                   -
                 </button>
                 <button
-                  className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-lg transition
+                  className={`w-7 h-7 rounded-full flex items-center justify-center font-['Brush_Script_MT'] font-bold text-lg transition
                   ${
                     role === "civilian"
                       ? "bg-[#bfc3d1] text-[#22364a] hover:bg-[#dbe0ee]"
@@ -218,21 +218,21 @@ export default function GameSetup() {
         {/* Difficulty & Start */}
         <div className="flex flex-col md:flex-row gap-4 w-full">
           <div className="flex flex-col items-center bg-white/80 w-full md:w-1/2 rounded-lg p-2 shadow">
-            <span className="text-xs text-[#22364a] font-bold tracking-wide">
+            <span className="text-xs text-[#22364a] font-bold tracking-wide font-['Brush_Script_MT']">
               difficult
             </span>
             <select
-              className="w-full px-0 rounded-lg text-[#22364a] font-bold text-xl md:text-2xl text-center border-0 focus:outline-none"
+              className="w-full px-0 rounded-lg text-[#22364a] font-bold font-['Brush_Script_MT'] text-xl md:text-2xl text-center border-0 focus:outline-none"
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value as "easy" | "hard")}
-              style={{ fontFamily: "inherit" }}
+              style={{ fontFamily: "Brush_Script_MT" }}
             >
               <option value="easy">easy</option>
               <option value="hard">hard</option>
             </select>
           </div>
           <button
-            className={`w-full md:w-1/2 flex items-center justify-center gap-2 py-3 rounded-lg bg-[#ffe7a0] text-[#22364a] font-bold text-xl md:text-2xl shadow-lg transition
+            className={`w-full md:w-1/2 flex items-center justify-center gap-2 py-3 rounded-lg bg-[#ffe7a0] text-[#22364a] font-bold font-['Brush_Script_MT'] text-xl md:text-2xl shadow-lg transition
             ${
               !canStart
                 ? "opacity-50 cursor-not-allowed"

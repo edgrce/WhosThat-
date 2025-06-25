@@ -23,7 +23,7 @@ export default function LeaderboardPage() {
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col md:flex-row h-screen ">
       {/* Sidebar */}
       <Sidebar />
 
@@ -44,7 +44,7 @@ export default function LeaderboardPage() {
         {/* Main Content */}
         <main className="flex-1 flex items-center justify-center relative z-10 px-4 overflow-y-auto">
           {loading ? (
-            <div className="text-white text-xl mt-10">Loading...</div>
+            <div className="text-white text-xl mt-10 font-['Brush_Script_MT']">Loading...</div>
           ) : (
             <Leaderboard
               gameId={gameId}

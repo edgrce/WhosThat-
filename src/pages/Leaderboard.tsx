@@ -146,7 +146,7 @@ export default function Leaderboard() {
           await setDoc(doc(db, "games", newGameId, "players", p.username), {
             username: p.username,
             totalScore: p.totalScore ?? 0,
-            isMrWhiteCorrect: false, // ✅ Reset status lama agar tidak bawa ke next round
+            isMrWhiteCorrect: false,
           });
         })
       );
@@ -172,13 +172,13 @@ export default function Leaderboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="text-white text-2xl">Loading...</div>
+        <div className="text-white text-2xl font-['Brush_Script_MT']">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-gray-900 text-white">
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 bg-gray-900 text-white font-['Brush_Script_MT']">
       <div
         className="fixed inset-0 bg-cover bg-center z-0"
         style={{ backgroundImage: `url(${bg})` }}

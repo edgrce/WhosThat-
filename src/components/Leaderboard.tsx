@@ -170,10 +170,10 @@ export default function Leaderboard({ gameId, enableControls = false, onGameChan
 
   return (
     <div className="w-full max-w-2xl bg-white/90 p-6 rounded-xl shadow-xl text-gray-800">
-      <h2 className="text-2xl font-bold mb-4 text-center">Leaderboard</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center font-['Brush_Script_MT']">Leaderboard</h2>
 
       {enableControls && (
-        <div className="mb-4 text-center">
+        <div className="mb-4 text-center font-['Brush_Script_MT']">
           <select
             value={gameId}
             onChange={(e) => onGameChange?.(e.target.value)}
@@ -195,7 +195,7 @@ export default function Leaderboard({ gameId, enableControls = false, onGameChan
             className="flex justify-between items-center p-3 bg-white rounded-lg shadow border border-gray-200"
           >
             <div className="flex items-center space-x-3">
-              <div className="text-lg font-bold">{idx + 1}.</div>
+              <div className="text-lg font-bold font-['Brush_Script_MT']">{idx + 1}.</div>
               {getRoleIcon(player.role) ? (
                 <img
                   src={getRoleIcon(player.role)!}
@@ -205,7 +205,7 @@ export default function Leaderboard({ gameId, enableControls = false, onGameChan
               ) : (
                 <div className="w-6 h-6 bg-gray-200 rounded" />
               )}
-              <div className="font-semibold">{player.username}</div>
+              <div className="font-semibold font-['Brush_Script_MT']">{player.username}</div>
             </div>
             <div className="flex items-center gap-2">
               <img src={trophyIcon} alt="score" className="w-4 h-4" />
@@ -219,13 +219,13 @@ export default function Leaderboard({ gameId, enableControls = false, onGameChan
         <div className="flex justify-between mt-6 gap-4">
           <button
             onClick={resetScores}
-            className="flex-1 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            className="flex-1 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-['Brush_Script_MT']"
           >
             Reset Scores
           </button>
           <button
             onClick={playAgain}
-            className="flex-1 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            className="flex-1 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-['Brush_Script_MT']"
           >
             Play Again
           </button>
