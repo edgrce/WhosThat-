@@ -87,12 +87,9 @@ export const RegisterPage = () => {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-600" />
             </div>
-            <div className="relative bg-[#000A1B] px-4 text-gray-400 text-sm inline-block">Atau</div>
           </div>
 
-          <GoogleAuthButton onClick={handleGoogleLogin} />
-
-          <div className="cursor-pointer text-center text-sm mt-6 text-gray-400">
+          <div className="cursor-pointer text-center text-sm mt-10 text-gray-400">
             Sudah punya akun?{' '}
             <a href="/login" className="text-[#FFE3A9] hover:underline">
               Login disini
