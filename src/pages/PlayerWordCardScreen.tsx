@@ -175,7 +175,6 @@ export default function PlayerWordCardScreen() {
       <GameLogo src={logo} />
 
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-center w-full max-w-7xl gap-8 md:gap-12 mt-15 md:mt-0 px-4">
-        {/* Left Card */}
         <div className="bg-[#f5f6f7]/90 rounded-2xl shadow-xl w-full max-w-xs min-h-[420px] flex flex-col px-6 py-8">
           <div
             className="text-3xl font-bold text-[#22364a] mb-2 text-center font-['Brush_Script_MT']"
@@ -188,7 +187,6 @@ export default function PlayerWordCardScreen() {
           <RoleList roles={roles} meta={ROLE_META} />
         </div>
 
-        {/* Card Grid */}
         <div className="flex-1 flex flex-col items-center justify-center w-full">
           <div className={`grid ${gridCols} ${gap} w-full max-w-2xl`}>
             {Array.from({ length: playersCount }).map((_, idx) => {

@@ -7,7 +7,6 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Helper untuk navigasi + close sidebar
   const handleNavigate = (path: string) => {
     navigate(path);
     setIsOpen(false);
@@ -23,7 +22,6 @@ export default function Sidebar() {
         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </button>
 
-      {/* Sidebar */}
       <div
         className={`
           fixed top-0 left-0 h-full bg-[#0b1b2a] text-[#ffe7a0] flex flex-col
@@ -32,7 +30,6 @@ export default function Sidebar() {
           md:translate-x-0 md:static md:transform-none
         `}
       >
-        {/* Logo */}
         <div className="p-8 border-b border-[#2c3a4a] flex items-center justify-center">
           <button
             onClick={() => handleNavigate("/dashboard")}
@@ -43,7 +40,6 @@ export default function Sidebar() {
           </button>
         </div>
 
-        {/* Menu */}
         <nav className="flex-1 px-6 py-10">
           <ul className="space-y-8">
             <li>

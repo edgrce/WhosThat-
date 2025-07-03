@@ -90,9 +90,9 @@ export const RegisterPage = () => {
           </div>
 
           <div className="cursor-pointer text-center text-sm mt-10 text-gray-400">
-            Sudah punya akun?{' '}
+            Already have an account?{' '}
             <a href="/login" className="text-[#FFE3A9] hover:underline">
-              Login disini
+              Login
             </a>
           </div>
         </div>

@@ -288,9 +288,7 @@ export default function VoteScreen() {
           </div>
         </div>
 
-        {/* Mobile & Tablet Layout: Stacked */}
         <div className="lg:hidden flex flex-col space-y-6">
-          {/* Role List Panel */}
           <div className="bg-[#f5f6f7]/95 rounded-2xl shadow-xl flex flex-col px-6 sm:px-8 py-6 sm:py-8 mx-auto w-full max-w-sm">
             <div className="text-xl sm:text-2xl font-bold mb-2 font-['Brush_Script_MT']">Find Them</div>
             <div className="text-[#3b5c7e] text-sm sm:text-md mb-4 font-['Brush_Script_MT'] sm:mb-6 font-semibold">

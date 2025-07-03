@@ -8,10 +8,8 @@ type Props = {
 };
 
 export default function EliminationScreen({ role, onContinue }: Props) {
-  // Lanjut saat klik di mana saja
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      // Pastikan event target adalah element yang valid
       if (e.target instanceof HTMLElement) {
         onContinue();
       }
@@ -34,10 +32,8 @@ export default function EliminationScreen({ role, onContinue }: Props) {
       }}
       title="Click anywhere to continue"
     >
-      {/* Overlay gelap */}
       <div className="absolute inset-0 bg-[#0b1b2a]/60 z-0" />
 
-      {/* Teks utama */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 select-none">
         <h1
           className="text-3xl md:text-4xl font-bold text-white mb-12 drop-shadow-lg animate-fade-in"

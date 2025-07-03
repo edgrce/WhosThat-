@@ -85,16 +85,16 @@ export const LoginPage = () => {
               <div className="w-full border-t border-gray-600" />
             </div>
             <div className="relative bg-[#000A1B] px-4 text-gray-400 text-sm inline-block">
-              Atau
+              Or
             </div>
           </div>
 
           <GoogleAuthButton onClick={handleGoogleLogin} />
 
           <div className="cursor-pointer text-center text-sm mt-6 text-gray-400">
-            Belum punya akun?{" "}
+            Don't have an account yet?{" "}
             <a href="/register" className="text-[#FFE3A9] hover:underline">
-              Daftar disini
+              Register 
             </a>
           </div>
         </div>

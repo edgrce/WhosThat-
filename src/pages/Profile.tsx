@@ -12,7 +12,6 @@ export default function Profile() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  // ✅ Ambil current user dari Firebase Auth
   useEffect(() => {
     const auth = getAuth();
     if (auth.currentUser) {
@@ -60,7 +59,6 @@ export default function Profile() {
             {/* Avatar */}
             <div className="absolute -top-14 left-1/2 -translate-x-1/2 flex flex-col items-center">
               <div className="relative">
-                {/* ✅ Selalu pakai icon */}
                 <FaUserCircle className="w-24 h-24 text-[#ffe7a0] bg-[#0b1b2a] rounded-full border-4 border-[#ffe7a0]" />
 
                 <button
