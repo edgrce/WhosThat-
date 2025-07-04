@@ -78,29 +78,41 @@ export default function PlayerWordCardScreen() {
     try {
       if (idx < assignedNames.length) return;
 
-      const role = getRandomRole(roles, assignedRoles);
-      const { word1, word2 } = await getGameWords();
-
-      let word = "";
-      if (role === "civilian") word = word1 || "Default1";
-      else if (role === "undercover") word = word2 || "Default2";
-      else word = "";
-
       const playerRef = doc(db, "games", gameId, "players", currentUsername);
       const existingSnap = await getDoc(playerRef);
-      const prevScore = existingSnap.exists()
-        ? existingSnap.data().totalScore ?? 0
-        : 0;
+      const { word1, word2 } = await getGameWords();
 
-      await setDoc(playerRef, {
-        username: currentUsername,
-        role,
-        word,
-        score: 0,
-        totalScore: prevScore,
-        eliminated: false, // ✅ reset status
-        isMrWhiteCorrect: false, // ✅ reset status lama
-      });
+      let role = "";
+      let word = "";
+      let totalScore = 0;
+
+      if (isNextRound || !existingSnap.exists()) {
+        // Generate baru untuk next round atau player baru
+        role = getRandomRole(roles, assignedRoles);
+        if (role === "civilian") word = word1;
+        else if (role === "undercover") word = word2;
+        else word = "";
+
+        totalScore = existingSnap.exists()
+          ? existingSnap.data().totalScore ?? 0
+          : 0;
+
+        await setDoc(playerRef, {
+          username: currentUsername,
+          role,
+          word,
+          score: 0,
+          totalScore,
+          eliminated: false,
+          isMrWhiteCorrect: false,
+        });
+      } else {
+        // Gunakan data lama (untuk game yang sedang berjalan)
+        const data = existingSnap.data();
+        role = data.role;
+        word = data.word;
+        totalScore = data.totalScore ?? 0;
+      }
 
       navigate("/playershowword", {
         state: {
@@ -124,28 +136,27 @@ export default function PlayerWordCardScreen() {
     }
   };
 
-  // Dynamic sizing based on player count
   const getCardSizing = () => {
     if (playersCount <= 6) {
       return {
         cardSize: "w-[120px] h-[170px] md:w-[150px] md:h-[210px]",
         imageSize: "w-16 h-16 md:w-20 md:h-20",
         gridCols: "grid-cols-2 md:grid-cols-3",
-        gap: "gap-4 md:gap-8"
+        gap: "gap-4 md:gap-8",
       };
     } else if (playersCount <= 9) {
       return {
         cardSize: "w-[100px] h-[140px] md:w-[120px] md:h-[170px]",
         imageSize: "w-12 h-12 md:w-16 md:h-16",
         gridCols: "grid-cols-3 md:grid-cols-3",
-        gap: "gap-3 md:gap-6"
+        gap: "gap-3 md:gap-6",
       };
     } else {
       return {
         cardSize: "w-[80px] h-[110px] md:w-[100px] md:h-[140px]",
         imageSize: "w-10 h-10 md:w-12 md:h-12",
         gridCols: "grid-cols-3 md:grid-cols-4",
-        gap: "gap-2 md:gap-4"
+        gap: "gap-2 md:gap-4",
       };
     }
   };
@@ -176,9 +187,7 @@ export default function PlayerWordCardScreen() {
 
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-center w-full max-w-7xl gap-8 md:gap-12 mt-15 md:mt-0 px-4">
         <div className="bg-[#f5f6f7]/90 rounded-2xl shadow-xl w-full max-w-xs min-h-[420px] flex flex-col px-6 py-8">
-          <div
-            className="text-3xl font-bold text-[#22364a] mb-2 text-center font-['Brush_Script_MT']"
-          >
+          <div className="text-3xl font-bold text-[#22364a] mb-2 text-center font-['Brush_Script_MT']">
             {currentUsername}
           </div>
           <div className="text-[#3b5c7e] text-lg mb-4 text-center font-['Brush_Script_MT']">
@@ -195,10 +204,11 @@ export default function PlayerWordCardScreen() {
                 <div key={idx} className="flex items-center justify-center">
                   <button
                     className={`bg-[#ffe7a0] rounded-xl shadow-lg ${cardSize} flex items-center justify-center border-4 border-[#22364a] transition
-                ${
-                  isPicked ? "opacity-40 cursor-not-allowed" : "hover:scale-105"
-                }
-              `}
+                    ${
+                      isPicked
+                        ? "opacity-40 cursor-not-allowed"
+                        : "hover:scale-105"
+                    }`}
                     onClick={() => handleCardClick(idx)}
                     disabled={isPicked}
                   >

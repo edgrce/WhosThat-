@@ -37,19 +37,27 @@ export default function Leaderboard({
   const [players, setPlayers] = useState<Player[]>([]);
   const [maxScore, setMaxScore] = useState(0);
   const [gameIds, setGameIds] = useState<string[]>([]);
-  const [gameStatus, setGameStatus] = useState<"finished" | "setup" | "playing" | "">("");
+  const [gameStatus, setGameStatus] = useState<
+    "finished" | "setup" | "playing" | ""
+  >("");
   const [winner, setWinner] = useState<string | undefined>();
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [roles, setRoles] = useState<any>({});
+  const [difficulty, setDifficulty] = useState("easy");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
+  const fetchGameList = async () => {
+    const snap = await getDocs(
+      query(collection(db, "games"), orderBy("createdAt", "desc"))
+    );
+    const ids = snap.docs.map((doc) => doc.id);
+    setGameIds(ids);
+  };
+
   useEffect(() => {
-    const fetchGames = async () => {
-      if (!enableControls) return;
-      const snap = await getDocs(query(collection(db, "games"), orderBy("createdAt", "desc")));
-      const ids = snap.docs.map((doc) => doc.id);
-      setGameIds(ids);
-    };
-    fetchGames();
+    if (!enableControls) return;
+    fetchGameList();
   }, [enableControls]);
 
   useEffect(() => {
@@ -59,13 +67,18 @@ export default function Leaderboard({
       const data = gameSnap.data();
       setGameStatus(data?.status || "setup");
       setWinner(data?.winner);
+      setRoles(data?.roles || {});
+      setDifficulty(data?.difficulty || "easy");
     };
     fetchGameInfo();
   }, [gameId]);
 
   useEffect(() => {
     const fetchPlayers = async () => {
-      const q = query(collection(db, "games", gameId, "players"), orderBy("totalScore", "desc"));
+      const q = query(
+        collection(db, "games", gameId, "players"),
+        orderBy("totalScore", "desc")
+      );
       const snap = await getDocs(q);
       const data: Player[] = snap.docs.map((doc) => ({
         id: doc.id,
@@ -117,24 +130,46 @@ export default function Leaderboard({
 
   const deleteGame = async () => {
     try {
-      const playerSnap = await getDocs(collection(db, "games", gameId, "players"));
+      const playerSnap = await getDocs(
+        collection(db, "games", gameId, "players")
+      );
       await Promise.all(
         playerSnap.docs.map((docSnap) =>
           deleteDoc(doc(db, "games", gameId, "players", docSnap.id))
         )
       );
       await deleteDoc(doc(db, "games", gameId));
-      alert("Game successfully deleted.");
-      if (onGameChange && gameIds.length > 1) {
+      setSuccessMessage("Game successfully deleted.");
+      await fetchGameList();
+
+      if (onGameChange) {
         const next = gameIds.find((id) => id !== gameId);
         onGameChange(next || "");
       }
     } catch (err) {
       console.error("Failed to delete game:", err);
-      alert("An error occurred while deleting the game.");
+      setSuccessMessage("An error occurred while deleting the game.");
     } finally {
       setConfirmDelete(false);
+      setTimeout(() => setSuccessMessage(""), 3000);
     }
+  };
+
+  const handleContinueGame = async () => {
+    const snap = await getDocs(collection(db, "games", gameId, "players"));
+    const usernames = snap.docs.map((doc) => doc.data().username);
+
+    navigate("/playerdraw", {
+      state: {
+        gameId,
+        playersCount: usernames.length,
+        roles,
+        difficulty,
+        currentPlayer: 1,
+        usernames,
+        isNextRound: true,
+      },
+    });
   };
 
   const getStatusLabel = () => {
@@ -191,7 +226,9 @@ export default function Leaderboard({
             className="flex justify-between items-center p-3 bg-white rounded-lg shadow border border-gray-200"
           >
             <div className="flex items-center space-x-3">
-              <div className="text-lg font-bold font-['Brush_Script_MT']">{idx + 1}.</div>
+              <div className="text-lg font-bold font-['Brush_Script_MT']">
+                {idx + 1}.
+              </div>
               {getRoleIcon(player.role) ? (
                 <img
                   src={getRoleIcon(player.role)!}
@@ -214,19 +251,38 @@ export default function Leaderboard({
       </ul>
 
       {enableControls && (
-        <div className="flex justify-between mt-6 gap-4">
-          <button
-            onClick={resetScores}
-            className="flex-1 bg-[#7b61ff] text-white px-4 py-2 rounded hover:bg-[#7b33ff] font-['Brush_Script_MT']"
-          >
-            Reset Scores
-          </button>
-          <button
-            onClick={() => setConfirmDelete(true)}
-            className="flex-1 bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 font-['Brush_Script_MT']"
-          >
-            Delete Game
-          </button>
+        <div className="flex flex-col sm:flex-row justify-between mt-6 gap-4">
+          {gameStatus === "finished" ? (
+            <>
+              <button
+                onClick={resetScores}
+                className="flex-1 bg-[#7b61ff] text-white px-4 py-2 rounded hover:bg-[#7b33ff] font-['Brush_Script_MT']"
+              >
+                Reset Scores
+              </button>
+              <button
+                onClick={() => setConfirmDelete(true)}
+                className="flex-1 bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 font-['Brush_Script_MT']"
+              >
+                Delete Game
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleContinueGame}
+                className="flex-1 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-['Brush_Script_MT']"
+              >
+                Continue Game
+              </button>
+              <button
+                onClick={() => setConfirmDelete(true)}
+                className="flex-1 bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 font-['Brush_Script_MT']"
+              >
+                Delete Game
+              </button>
+            </>
+          )}
         </div>
       )}
 
@@ -250,6 +306,14 @@ export default function Leaderboard({
                 Cancel
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="text-green-600 font-['Brush_Script_MT']">
+            {successMessage}
           </div>
         </div>
       )}

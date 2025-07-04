@@ -23,7 +23,7 @@ export async function checkWinnerAndFinishGame(
     const data = docSnap.data();
     return {
       id: docSnap.id,
-      username: docSnap.id, // ✅ Set username dari document ID
+      username: docSnap.id,  
       role: data.role?.toLowerCase(),
       eliminated: data.eliminated,
       isMrWhiteCorrect: data.isMrWhiteCorrect || false,
@@ -79,7 +79,6 @@ export async function finalizeEliminationAndCheckWinner(
 
   await updateDoc(playerRef, { eliminated: true });
 
-  // Optional: tunggu sync Firestore
   await new Promise((res) => setTimeout(res, 300));
 
   if (role === "mrwhite") {
@@ -92,19 +91,17 @@ export async function finalizeEliminationAndCheckWinner(
   if (winner) {
     const snap = await getDocs(collection(db, "games", gameId, "players"));
 
-    // ✅ Cegah update ganda jika sudah diberi skor
     const alreadyScored = snap.docs.some((doc) => doc.data()?.scored === true);
     if (alreadyScored) {
       navigate("/leaderboard", { state: { gameId, winner } });
       return;
     }
 
-    // ✅ Buat players dengan structure yang benar
     const players: Player[] = snap.docs.map((docSnap) => {
       const data = docSnap.data();
       return {
         id: docSnap.id,
-        username: docSnap.id, // ✅ Set username dari document ID
+        username: docSnap.id, 
         role: data.role?.toLowerCase(),
         eliminated: data.eliminated ?? false,
         isMrWhiteCorrect: data.isMrWhiteCorrect || false,
@@ -123,7 +120,7 @@ export async function finalizeEliminationAndCheckWinner(
           await updateDoc(doc(db, "games", gameId, "players", username), {
             score: scoreData.roundScore,
             totalScore: (data.totalScore ?? 0) + scoreData.roundScore,
-            scored: true, // ✅ ditandai sudah diberi skor
+            scored: true,  
           });
         }
       })

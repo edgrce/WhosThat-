@@ -3,11 +3,7 @@ import { db } from "../firebase/config";
 import { calculateScores } from "../utils/scoreUtils";
 import { Player } from "../types/player";
 
-/**
- * Optional: fungsi processElimination di hook ini 
- * kalau kamu pisah voting dan score.
- * Biasanya yang aktif di VoteScreen: useGameElimination.
- */
+ 
 export async function processElimination(
   gameId: string,
   playerId: string,

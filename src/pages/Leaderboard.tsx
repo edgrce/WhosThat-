@@ -112,19 +112,30 @@ export default function Leaderboard() {
       );
       const snapWords = await getDocs(qWords);
       if (snapWords.empty) throw new Error("No words found!");
-      const picked = snapWords.docs[
-        Math.floor(Math.random() * snapWords.docs.length)
-      ].data();
+      const picked =
+        snapWords.docs[
+          Math.floor(Math.random() * snapWords.docs.length)
+        ].data();
       const newWord1 = picked.word1;
       const newWord2 = picked.word2;
 
+      // Generate and shuffle role pool
       const rolePool: string[] = [];
       Object.entries(roles).forEach(([role, count]) => {
         for (let i = 0; i < (count as number); i++) {
           rolePool.push(role);
         }
       });
-      const shuffledRoles = rolePool.sort(() => Math.random() - 0.5);
+      const shuffleArray = <T,>(arr: T[]): T[] =>
+        [...arr].sort(() => Math.random() - 0.5);
+      const shuffledRoles = shuffleArray(rolePool);
+
+      const snap = await getDocs(collection(db, "games", gameId, "players"));
+      const usernames = snap.docs.map((doc) => doc.data().username);
+
+      if (usernames.length !== shuffledRoles.length) {
+        throw new Error("Mismatch between players and shuffled roles");
+      }
 
       await setDoc(doc(db, "games", newGameId), {
         roles,
@@ -133,19 +144,28 @@ export default function Leaderboard() {
         word2: newWord2,
         shuffledRoles,
         status: "setup",
+        parentGameId: gameId,
         createdAt: new Date(),
-        
       });
 
-      const snap = await getDocs(collection(db, "games", gameId, "players"));
-      const usernames = snap.docs.map((doc) => doc.data().username);
-
       await Promise.all(
-        snap.docs.map(async (docSnap) => {
+        snap.docs.map(async (docSnap, idx) => {
           const p = docSnap.data();
-          await setDoc(doc(db, "games", newGameId, "players", p.username), {
-            username: p.username,
+          const username = p.username;
+          const role = shuffledRoles[idx];
+          let word = "";
+
+          if (role === "civilian") word = newWord1;
+          else if (role === "undercover") word = newWord2;
+          else word = "";
+
+          await setDoc(doc(db, "games", newGameId, "players", username), {
+            username,
+            role,
+            word,
+            score: 0,
             totalScore: p.totalScore ?? 0,
+            eliminated: false,
             isMrWhiteCorrect: false,
           });
         })
@@ -172,7 +192,9 @@ export default function Leaderboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="text-white text-2xl font-['Brush_Script_MT']">Loading...</div>
+        <div className="text-white text-2xl font-['Brush_Script_MT']">
+          Loading...
+        </div>
       </div>
     );
   }
@@ -201,7 +223,6 @@ export default function Leaderboard() {
           </div>
         </div>
 
-        {/* Scrollable leaderboard */}
         <div className="flex-1 overflow-y-auto px-6 space-y-3 pb-4">
           {players.map((player, index) => (
             <div
@@ -259,17 +280,16 @@ export default function Leaderboard() {
           ))}
         </div>
 
-        {/* Sticky footer buttons */}
         <div className="p-6 flex-shrink-0 space-y-3 bg-white">
           <button
             onClick={handleEnd}
-            className="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-semibold transition-colors"
+            className="w-full py-3 bg-red-400 hover:bg-red-600 text-white rounded-xl font-semibold transition-colors"
           >
             End
           </button>
           <button
             onClick={handleNext}
-            className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-semibold transition-colors"
+            className="w-full py-3 bg-[#7b61ff] hover:bg-[#7b33ff] text-white rounded-xl font-semibold transition-colors"
           >
             Next
           </button>
