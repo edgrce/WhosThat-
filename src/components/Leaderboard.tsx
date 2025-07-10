@@ -175,7 +175,7 @@ export default function Leaderboard({
   const getStatusLabel = () => {
     if (gameStatus === "finished") return "✅ Finished";
     if (gameStatus === "playing") return "⏳ Playing";
-    return "⏱️ Not started yet";
+    return "⏱️ In Game";
   };
 
   const getWinnerLabel = () => {
